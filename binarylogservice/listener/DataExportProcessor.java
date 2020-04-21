@@ -1,6 +1,5 @@
 package com.yy.fastcustom.mysql.binarylogservice.listener;
 
-
 import com.yy.fastcustom.mysql.binarylogservice.dto.BinlogRowData;
 import com.yy.fastcustom.mysql.binarylogservice.dto.MysqlRowData;
 

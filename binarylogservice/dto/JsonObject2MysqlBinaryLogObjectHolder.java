@@ -10,10 +10,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-//import java.util.function.Consumer;
-//import java.util.function.IntConsumer;
 import java.util.function.Supplier;
-//import java.util.stream.IntStream;
 
 /**
  * Created by zzq.
@@ -22,15 +19,6 @@ import java.util.function.Supplier;
 public class JsonObject2MysqlBinaryLogObjectHolder {
 
     private MysqlBinaryLogDataBaseObject mysqlBinaryLogDataBaseObject;
-//    private final JdbcTemplate jdbcTemplate;
-
-//    private String SQL_SCHEMA = "select table_schema, table_name, " +
-//            "column_name, ordinal_position from information_schema.columns " +
-//            "where table_schema = ? and table_name = ?";
-
-//    public JsonObject2MysqlBinaryLogObjectHolder(JdbcTemplate jdbcTemplate) {
-//        this.jdbcTemplate = jdbcTemplate;
-//    }
 
     {
         loadJson("template.json");
@@ -51,7 +39,6 @@ public class JsonObject2MysqlBinaryLogObjectHolder {
                     DataBaseJsonObject.class
             );
             mysqlBinaryLogDataBaseObject = parse(dataBaseJsonObject);
-//            loadMeta();
         } catch (IOException ex) {
             log.error(ex.getMessage());
             throw new RuntimeException("fail to parse json file");
@@ -113,6 +100,17 @@ public class JsonObject2MysqlBinaryLogObjectHolder {
                                         Supplier<R> factory) {
         return map.computeIfAbsent(key, k -> factory.get());
     }
+
+
+    //    private final JdbcTemplate jdbcTemplate;
+
+//    private String SQL_SCHEMA = "select table_schema, table_name, " +
+//            "column_name, ordinal_position from information_schema.columns " +
+//            "where table_schema = ? and table_name = ?";
+
+//    public JsonObject2MysqlBinaryLogObjectHolder(JdbcTemplate jdbcTemplate) {
+//        this.jdbcTemplate = jdbcTemplate;
+//    }
 
 //    private void loadMeta() {
 //

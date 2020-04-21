@@ -19,18 +19,6 @@ public class MysqlBinaryLogMonitor {
     public void connect() {
 
         new Thread(() -> {
-//            client = new BinaryLogClient(
-//                    config.getHost(),
-//                    config.getPort(),
-//                    config.getUsername(),
-//                    config.getPassword()
-//            );
-//
-//            if (!StringUtils.isEmpty(config.getBinlogName()) &&
-//                    !config.getPosition().equals(-1L)) {
-//                client.setBinlogFilename(config.getBinlogName());
-//                client.setBinlogPosition(config.getPosition());
-//            }
 
             client = new BinaryLogClient(
                     "localhost",
