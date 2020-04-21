@@ -1,0 +1,46 @@
+{
+  "database": "imooc_ad_data",
+  "tableList": [
+    {
+      "tableName": "ad_plan",
+      "level": 2,
+      "insert": [
+        {"column": "id", "position": 1},
+        {"column": "user_id", "position": 2},
+        {"column": "plan_status", "position": 4},
+        {"column": "start_date", "position": 5},
+        {"column": "end_date", "position": 6}
+      ],
+      "update": [
+        {"column": "id", "position": 1},
+        {"column": "user_id", "position": 2},
+        {"column": "plan_status", "position": 4},
+        {"column": "start_date", "position": 5},
+        {"column": "end_date", "position": 6}
+      ],
+      "delete": [
+        {"column": "id", "position": 1}
+      ]
+    },
+    {
+      "tableName": "ad_unit",
+      "level": 3,
+      "insert": [
+        {"column": "id", "position": 1},
+        {"column": "unit_status", "position": 4},
+        {"column": "position_type", "position": 5},
+        {"column": "plan_id", "position": 2},
+        {"column": "unit_name", "position": 3}
+      ],
+      "update": [
+        {"column": "id", "position": 1},
+        {"column": "unit_status", "position": 4},
+        {"column": "position_type", "position": 5},
+        {"column": "plan_id", "position": 2}
+      ],
+      "delete": [
+        {"column": "id", "position": 1}
+      ]
+    }
+  ]
+}
