@@ -92,7 +92,6 @@ public class AggregationListenerGroup implements BinaryLogClient.EventListener {
         log.info("trigger event: {}", type.name());
 
         try {
-
             BinlogRowData rowData = buildRowData(event.getData());
             if (rowData == null) {
                 return;
