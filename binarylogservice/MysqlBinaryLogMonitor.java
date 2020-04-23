@@ -19,7 +19,6 @@ public class MysqlBinaryLogMonitor {
     public void connect() {
 
         new Thread(() -> {
-
             client = new BinaryLogClient(
                     "localhost",
                     3306,

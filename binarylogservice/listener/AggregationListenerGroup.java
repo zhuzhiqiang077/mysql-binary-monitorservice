@@ -154,8 +154,10 @@ public class AggregationListenerGroup implements BinaryLogClient.EventListener {
                     log.debug("ignore position: {}", index);
                     return;
                 }
-
-                String colValue = after[index].toString();
+                String colValue = null;
+                Serializable serializableObject = after[index];
+                if (serializableObject != null)
+                    colValue = after[index].toString();
                 afterMap.put(colName, colValue);
             });
 
