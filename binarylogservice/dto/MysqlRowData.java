@@ -16,6 +16,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MysqlRowData {
+    private String dbName;
 
     private String tableName;
 

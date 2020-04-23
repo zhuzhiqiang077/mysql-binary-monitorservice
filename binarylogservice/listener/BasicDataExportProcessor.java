@@ -24,12 +24,11 @@ public abstract class BasicDataExportProcessor implements DataExportProcessor {
 
         // 包装成最后需要投递的数据
         MysqlRowData rowData = new MysqlRowData();
-
         rowData.setTableName(table.getTableName());
         rowData.setLevel(BinlogRowData.getTable().getLevel());
         OpType opType = OpType.to(eventType);
         rowData.setOpType(opType);
-
+        rowData.setDbName(BinlogRowData.getDbName());
         // 取出模板中该操作对应的字段列表
         List<String> fieldList = table.getOpTypeFieldSetMap().get(opType);
         if (null == fieldList) {

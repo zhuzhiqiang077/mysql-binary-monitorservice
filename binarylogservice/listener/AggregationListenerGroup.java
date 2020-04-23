@@ -130,7 +130,6 @@ public class AggregationListenerGroup implements BinaryLogClient.EventListener {
     }
 
     private BinlogRowData buildRowData(EventData eventData) {
-
         MysqlBinaryLogDataTableObject table = jsonObject2MysqlBinaryLogObjectHolder.getTable(tableName);
 
         if (null == table) {
@@ -167,7 +166,7 @@ public class AggregationListenerGroup implements BinaryLogClient.EventListener {
         BinlogRowData rowData = new BinlogRowData();
         rowData.setAfter(afterMapList);
         rowData.setTable(table);
-
+        rowData.setDbName(this.dbName);
         return rowData;
     }
 }
