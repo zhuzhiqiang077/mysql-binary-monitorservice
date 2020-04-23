@@ -1,15 +1,9 @@
 package com.yy.fastcustom.mysql.binarylogservice.listener;
 
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
-import com.github.shyiko.mysql.binlog.event.DeleteRowsEventData;
-import com.github.shyiko.mysql.binlog.event.Event;
-import com.github.shyiko.mysql.binlog.event.EventData;
-import com.github.shyiko.mysql.binlog.event.EventType;
-import com.github.shyiko.mysql.binlog.event.TableMapEventData;
-import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
-import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
+import com.github.shyiko.mysql.binlog.event.*;
 import com.yy.fastcustom.mysql.binarylogservice.constant.Constant;
-import com.yy.fastcustom.mysql.binarylogservice.dto.BinlogRowData;
+import com.yy.fastcustom.mysql.binarylogservice.dto.BinaryLogRowData;
 import com.yy.fastcustom.mysql.binarylogservice.dto.JsonObject2MysqlBinaryLogObjectHolder;
 import com.yy.fastcustom.mysql.binarylogservice.dto.MysqlBinaryLogDataTableObject;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +25,8 @@ import java.util.stream.IntStream;
 public class AggregationListenerGroup implements BinaryLogClient.EventListener {
     private String dbName;
     private String tableName;
+    private Long timestamp;
+    private Long nextPosition;
 
     private Map<String, DataExportProcessor> listenerMap = new HashMap<>();
 
@@ -56,7 +52,8 @@ public class AggregationListenerGroup implements BinaryLogClient.EventListener {
 
     @Override
     public void onEvent(Event event) {
-        EventType type = event.getHeader().getEventType();
+        EventHeaderV4 eventHeader = event.getHeader();
+        EventType type = eventHeader.getEventType();
         log.debug("event type: {}", type);
 
         if (type == EventType.TABLE_MAP) {
@@ -91,15 +88,19 @@ public class AggregationListenerGroup implements BinaryLogClient.EventListener {
 
         log.info("trigger event: {}", type.name());
 
+        Long timestamp = eventHeader.getTimestamp();
+        Long nextPosition = eventHeader.getNextPosition();
+        //通过（时间戳和nextPosition）进行数据的唯一标记，便于后面的服务接口做过滤处理
+        this.timestamp = timestamp;
+        this.nextPosition = nextPosition;
         try {
-            BinlogRowData rowData = buildRowData(event.getData());
+            BinaryLogRowData rowData = buildRowData(event.getData());
             if (rowData == null) {
                 return;
             }
 
             rowData.setEventType(type);
             listener.export0(rowData);
-
         } catch (Exception ex) {
             ex.printStackTrace();
             log.error(ex.getMessage());
@@ -110,7 +111,6 @@ public class AggregationListenerGroup implements BinaryLogClient.EventListener {
     }
 
     private List<Serializable[]> getAfterValues(EventData eventData) {
-
         if (eventData instanceof WriteRowsEventData) {
             return ((WriteRowsEventData) eventData).getRows();
         }
@@ -128,7 +128,7 @@ public class AggregationListenerGroup implements BinaryLogClient.EventListener {
         return Collections.emptyList();
     }
 
-    private BinlogRowData buildRowData(EventData eventData) {
+    private BinaryLogRowData buildRowData(EventData eventData) {
         MysqlBinaryLogDataTableObject table = jsonObject2MysqlBinaryLogObjectHolder.getTable(tableName);
 
         if (null == table) {
@@ -162,10 +162,12 @@ public class AggregationListenerGroup implements BinaryLogClient.EventListener {
             afterMapList.add(afterMap);
         });
 
-        BinlogRowData rowData = new BinlogRowData();
+        BinaryLogRowData rowData = new BinaryLogRowData();
         rowData.setAfter(afterMapList);
         rowData.setTable(table);
         rowData.setDbName(this.dbName);
+        rowData.setTimestamp(this.timestamp);
+        rowData.setNextPosition(this.nextPosition);
         return rowData;
     }
 }

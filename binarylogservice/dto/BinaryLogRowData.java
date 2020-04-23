@@ -14,7 +14,11 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BinlogRowData {
+public class BinaryLogRowData {
+    private Long timestamp;
+
+    private Long nextPosition;
+
     private String dbName;
 
     private MysqlBinaryLogDataTableObject table;

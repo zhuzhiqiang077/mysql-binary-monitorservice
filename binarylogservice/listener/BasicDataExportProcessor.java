@@ -17,18 +17,20 @@ import java.util.Map;
 public abstract class BasicDataExportProcessor implements DataExportProcessor {
 
     @Override
-    public void export0(BinlogRowData BinlogRowData) {
+    public void export0(BinaryLogRowData binaryLogRowData) {
 
-        MysqlBinaryLogDataTableObject table = BinlogRowData.getTable();
-        EventType eventType = BinlogRowData.getEventType();
+        MysqlBinaryLogDataTableObject table = binaryLogRowData.getTable();
+        EventType eventType = binaryLogRowData.getEventType();
 
         // 包装成最后需要投递的数据
         MysqlRowData rowData = new MysqlRowData();
+        rowData.setTimestamp(binaryLogRowData.getTimestamp());
+        rowData.setNextPosition(binaryLogRowData.getNextPosition());
         rowData.setTableName(table.getTableName());
-        rowData.setLevel(BinlogRowData.getTable().getLevel());
+        rowData.setLevel(binaryLogRowData.getTable().getLevel());
         OpType opType = OpType.to(eventType);
         rowData.setOpType(opType);
-        rowData.setDbName(BinlogRowData.getDbName());
+        rowData.setDbName(binaryLogRowData.getDbName());
         // 取出模板中该操作对应的字段列表
         List<String> fieldList = table.getOpTypeFieldSetMap().get(opType);
         if (null == fieldList) {
@@ -36,7 +38,7 @@ public abstract class BasicDataExportProcessor implements DataExportProcessor {
             return;
         }
 
-        for (Map<String, String> afterMap : BinlogRowData.getAfter()) {
+        for (Map<String, String> afterMap : binaryLogRowData.getAfter()) {
 
             Map<String, String> _afterMap = new HashMap<>();
 

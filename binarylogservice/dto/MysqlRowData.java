@@ -16,6 +16,10 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MysqlRowData {
+    private Long timestamp;
+
+    private Long nextPosition;
+
     private String dbName;
 
     private String tableName;

@@ -25,6 +25,8 @@ public class MysqlBinaryLogMonitor {
                     "root",
                     "123456"
             );
+            client.setBinlogFilename("binlog-zzq.000426");
+            client.setBinlogPosition(0L);
 
             JsonObject2MysqlBinaryLogObjectHolder jsonObject2MysqlBinaryLogObjectHolder = new JsonObject2MysqlBinaryLogObjectHolder();
             BasicDataExportProcessor basicDataExportProcessor = new KafkaDataExportProcessor();
