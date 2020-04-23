@@ -25,7 +25,7 @@ public class MysqlBinaryLogMonitor {
                     "root",
                     "123456"
             );
-            client.setBinlogFilename("binlog-zzq.000426");
+            client.setBinlogFilename("这里可以通过SHOW MASTER STATUS获取当前的binarylog文件名，然后从position为0的位置开始读取");
             client.setBinlogPosition(0L);
 
             JsonObject2MysqlBinaryLogObjectHolder jsonObject2MysqlBinaryLogObjectHolder = new JsonObject2MysqlBinaryLogObjectHolder();
